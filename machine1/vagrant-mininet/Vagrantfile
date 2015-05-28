@@ -48,6 +48,10 @@ $cleanup = <<SCRIPT
   rm -rf /tmp/*
 SCRIPT
 
+$gbp = <<SCRIPT
+  scripts/machine1.sh
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
 
@@ -71,7 +75,6 @@ Vagrant.configure("2") do |config|
   ## SSH config
   config.ssh.forward_x11 = false
 
-  config.vm.provision :shell,  privileged: false, :path "scripts/set_env_vars.sh"
-  config.vm.provision :shell,  privileged: false, :path "scripts/machine1.sh"
+  config.vm.provision :shell, privileged: false, :inline => $gbp
 
 end
