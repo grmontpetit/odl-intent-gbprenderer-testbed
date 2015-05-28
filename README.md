@@ -1,5 +1,9 @@
 ## This repository is used to test the Intent GBP Renderer Project
 
+### Reference
+This repository was used to create the images:
+https://github.com/illotum/vagrant-mininet
+
 ### Usage
 Please refer to: https://wiki.opendaylight.org/view/Network_Intent_Composition:GBP_Renderer_How_To
 for more details.
