@@ -4,13 +4,21 @@
 This repository was used to create the images:
 https://github.com/illotum/vagrant-mininet
 
+#### Configuration
+Before running the famous vagrant up, lets configure the settings for the Virtual Machines. Edit scripts/set_env_vars.sh and replace the values there with the values you plan on using.
+
 ### Usage
 Please refer to: https://wiki.opendaylight.org/view/Network_Intent_Composition:GBP_Renderer_How_To
 for more details.
 
-#### Change default ips
-Replace IP1 and IP2 with the IP you'd want to use with the VMs. THese are going to be bridge connections so that you can SSH from any host on your local network.
+Assuming everything was configured correctly, simply run:
 ```
-"export GBPHOST1=IP1" >> ~/.profile
-"export GBPHOST2=IP2" >> ~/.profile
+vagrant up
+```
+
+On both virtual machines.
+
+In case you made changes after the vragrant provisioning, simply reload the VMs:
+```
+vagrant reload --provion
 ```
