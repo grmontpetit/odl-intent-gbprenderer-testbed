@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+envconfig = YAML.load_file( '../../env.yaml' )
+
 $init = <<SCRIPT
   aptitude update
   aptitude install -y build-essential fakeroot debhelper autoconf automake libssl-dev graphviz \

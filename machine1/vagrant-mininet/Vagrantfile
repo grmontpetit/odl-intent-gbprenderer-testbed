@@ -2,8 +2,7 @@
 # vi: set ft=ruby :
 
 require 'yaml'
-require_relative '../../env.yaml'
-envconfig = YAML.load_file( 'env.yaml' )
+envconfig = YAML.load_file( '../../env.yaml' )
 
 $init = <<SCRIPT
   aptitude update
