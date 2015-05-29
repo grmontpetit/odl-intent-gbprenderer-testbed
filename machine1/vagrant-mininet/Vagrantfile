@@ -1,8 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-require ′yaml′
-envconfig = YAML::load_file(“etc/users/” ENV[‘USER’] “../../env.yml”)
+require 'yaml'
+require_relative '../../env.yaml'
+envconfig = YAML.load_file( 'env.yaml' )
 
 $init = <<SCRIPT
   aptitude update
@@ -52,9 +53,9 @@ $cleanup = <<SCRIPT
 SCRIPT
 
 $gbp = <<SCRIPT
-  export GBPHOST1="config.vm.box = envconfig[‘env’][‘gbphost1’]"
-  export GBPHOST2="config.vm.box = envconfig[‘env’][‘gbphost2’]"
-  export CONTROLLER="config.vm.box = envconfig[‘env’][‘controller’]"
+  export GBPHOST1="config.vm.box = envconfig[‘gbphost1’]"
+  export GBPHOST2="config.vm.box = envconfig[‘gbphost2’]"
+  export CONTROLLER="config.vm.box = envconfig[‘controller’]"
   sudo apt-get install -y python-ipaddr
 SCRIPT
 
