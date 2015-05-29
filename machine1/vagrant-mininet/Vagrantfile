@@ -1,6 +1,9 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require ′yaml′
+envconfig = YAML::load_file(“etc/users/” ENV[‘USER’] “../../env.yml”)
+
 $init = <<SCRIPT
   aptitude update
   aptitude install -y build-essential fakeroot debhelper autoconf automake libssl-dev graphviz \
@@ -48,6 +51,13 @@ $cleanup = <<SCRIPT
   rm -rf /tmp/*
 SCRIPT
 
+$gbp = <<SCRIPT
+  export GBPHOST1="config.vm.box = envconfig[‘env’][‘gbphost1’]"
+  export GBPHOST2="config.vm.box = envconfig[‘env’][‘gbphost2’]"
+  export CONTROLLER="config.vm.box = envconfig[‘env’][‘controller’]"
+  sudo apt-get install -y python-ipaddr
+SCRIPT
+
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/trusty64"
 
@@ -66,11 +76,30 @@ Vagrant.configure("2") do |config|
   config.vm.provision :shell, privileged: false, :inline => $mininet
   # config.vm.provision :shell, :inline => $ryu
   # config.vm.provision :shell, privileged: false, :inline => $trema
-  config.vm.provision :shell, :inline => $cleanup
 
   ## SSH config
   config.ssh.forward_x11 = false
 
+  config.vm.provision :shell, privileged: false, :inline => $gbp
+
+  config.vm.provision :file do |file|
+    file.source = "scripts/testOfOverlay/config.py"
+    file.destination = "/tmp/testOfOverlay/config.py"
+  end
+  config.vm.provision :file do |file|
+    file.source = "scripts/testOfOverlay/mininet_gbp.py"
+    file.destination = "/tmp/testOfOverlay/mininet_gbp.py"
+  end
+  config.vm.provision :file do |file|
+    file.source = "scripts/testOfOverlay/odl_gbp.py"
+    file.destination = "/tmp/testOfOverlay/odl_gbp.py"
+  end
+  config.vm.provision :file do |file|
+    file.source = "scripts/testOfOverlay/testOfOverlay.py"
+    file.destination = "/tmp/testOfOverlay/testOfOverlay.py"
+  end
   config.vm.provision "shell", privileged: false, path: "scripts/machine1.sh"
+
+  config.vm.provision :shell, :inline => $cleanup
 
 end

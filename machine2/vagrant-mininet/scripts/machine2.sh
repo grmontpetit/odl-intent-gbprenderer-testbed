@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-sudo ./testOfOverlay.py --local s2 --controller $CONTROLLER
+scripts/testOfOverlay/testOfOverlay.py --local s2 --controller $CONTROLLER
