@@ -117,7 +117,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         file.destination = "/tmp/testOfOverlay/testOfOverlay.py"
       end
       ## Run python script
-      srv.vm.provision :shell, privileged: true, inline: '/tmp/testOfOverlay/testOfOverlay.py --local ' + local_alias +' --controller' + controller
+      srv.vm.provision :shell, privileged: true, inline: '/tmp/testOfOverlay/testOfOverlay.py --local ' + local_alias +' --controller ' + controller
 
       ## Clean the install
       srv.vm.provision :shell, :inline => $cleanup
