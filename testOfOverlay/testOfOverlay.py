@@ -96,10 +96,10 @@ if __name__ == '__main__':
         # contracts is a global list from config.py.
         # get_contract creates the specific subject, classifiers, rules etc for the contract
         #     and appends this to the global tenant list.
-        for contract in contracts:
-             odl_gbp.get_contract(TENANT, 
-                          contract['provider'], contract['consumer'], 
-                          contract['id'])
+#        for contract in contracts:
+#             odl_gbp.get_contract(TENANT, 
+#                          contract['provider'], contract['consumer'], 
+#                          contract['id'])
         
         # POST to the controller to register tenants
         if args.policy:
