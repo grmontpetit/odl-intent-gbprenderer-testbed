@@ -101,19 +101,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
       ## Copy the python scripts to the /tmp/testOfOverlay directory
       config.vm.provision :file do |file|
-        file.source = "scripts/testOfOverlay/config.py"
+        file.source = "testOfOverlay/config.py"
         file.destination = "/tmp/testOfOverlay/config.py"
       end
       config.vm.provision :file do |file|
-        file.source = "scripts/testOfOverlay/mininet_gbp.py"
+        file.source = "testOfOverlay/mininet_gbp.py"
         file.destination = "/tmp/testOfOverlay/mininet_gbp.py"
       end
       config.vm.provision :file do |file|
-        file.source = "scripts/testOfOverlay/odl_gbp.py"
+        file.source = "testOfOverlay/odl_gbp.py"
         file.destination = "/tmp/testOfOverlay/odl_gbp.py"
       end
       config.vm.provision :file do |file|
-        file.source = "scripts/testOfOverlay/testOfOverlay.py"
+        file.source = "testOfOverlay/testOfOverlay.py"
         file.destination = "/tmp/testOfOverlay/testOfOverlay.py"
       end
       ## Run python script
