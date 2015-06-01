@@ -81,10 +81,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       command2 = 'export CONTROLLER=\"' + controller + '\"'
       command3 = 'export REMOTE_ALIAS=\"' + remote_alias + '\"'
       command4 = 'export LOCAL_IP=\"' + local_ip + '\"'
+      command5 = 'export LOCAL_ALIAS=\"' + local_alias + '\"'
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command1 + ' >> /etc/profile'
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command2 + ' >> /etc/profile'
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command3 + ' >> /etc/profile'
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command4 + ' >> /etc/profile'
+      srv.vm.provision :shell, privileged: true, inline: 'echo ' + command5 + ' >> /etc/profile'
       srv.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
       ## Copy ovs patch
