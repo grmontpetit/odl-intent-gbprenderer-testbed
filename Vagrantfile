@@ -83,14 +83,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       controller = servers["controller"]
       remote_ip = servers["remote_ip"]
       remote_alias = servers["remote_alias"]
-      hhh = 'export REMOTE_IP="' + remote_ip + '"'
-      srv.vm.provision "shell", privileged: false, inline: hhh
-      #srv.vm.provision "shell", privileged: false, inline: 'export CONTROLLER="' + controller + '"'
-      #srv.vm.provision "shell", privileged: false, inline: 'export REMOTE_ALIAS="' + remote_alias + '"'
-      srv.vm.provision "shell", privileged: false, inline: 'echo "export REMOTE_IP=\"' + remote_ip + '\""'
-      srv.vm.provision "shell", privileged: false, inline: 'echo $REMOTE_IP'
-      #srv.vm.provision "shell", privileged: false, inline: 'echo $CONTROLLER'
-      #srv.vm.provision "shell", privileged: false, inline: 'echo $REMOTE_ALIAS'
+      local_ip = servers["local_ip"]
+      command1 = 'export REMOTE_IP=\"' + remote_ip + '\"'
+      command2 = 'export CONTROLLER=\"' + controller + '\"'
+      command3 = 'export REMOTE_ALIAS=\"' + remote_alias + '\"'
+      command4 = 'export LOCAL_IP=\"' + local_ip + '\"'
+      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command1 + ' >> /etc/profile'
+      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command2 + ' >> /etc/profile'
+      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command3 + ' >> /etc/profile'
+      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command4 + ' >> /etc/profile'
+      srv.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
     end
   end
 end
