@@ -88,11 +88,11 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       srv.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
 
       ## Install prereq
-      #srv.vm.provision :shell, :inline => $init
+      srv.vm.provision :shell, :inline => $init
       ## Install OVS
-      #srv.vm.provision :shell, privileged: false, :inline => $ovs
+      srv.vm.provision :shell, privileged: false, :inline => $ovs
       ## Install mininet
-      #srv.vm.provision :shell, privileged: false, :inline => $mininet
+      srv.vm.provision :shell, privileged: false, :inline => $mininet
       ## SSH config
       srv.ssh.forward_x11 = false
 
