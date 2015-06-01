@@ -2,8 +2,8 @@ import os
 
 GBPHOST1=os.getenv('$LOCAL_IP', None)
 GBPHOST2=os.getenv('$REMOTE_IP', None)
-GBPHOST2=os.getenv('$REMOTE_ALIAS', None)
-GBPHOST2=os.getenv('$LOCAL_ALIAS', None)
+REMOTE_ALIAS=os.getenv('$REMOTE_ALIAS', None)
+LOCAL_ALIAS=os.getenv('$LOCAL_ALIAS', None)
 
 TENANT="f5c7d344-d1c7-4208-8531-2c2693657e12"
 L3CTX="f2311f52-890f-4095-8b85-485ec8b92b3c"
