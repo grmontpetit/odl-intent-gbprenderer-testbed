@@ -34,7 +34,7 @@ $mininet = <<SCRIPT
   git clone git://github.com/mininet/mininet
   pushd mininet
   git checkout -b 2.1.0p1 2.1.0p1
-  patch -p0 < /vagrant/mn-options.patch
+  patch -p0 < /tmp/mn-options.patch
   ./util/install.sh -fn
   popd
 SCRIPT
@@ -86,6 +86,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command3 + ' >> /etc/profile'
       srv.vm.provision :shell, privileged: true, inline: 'echo ' + command4 + ' >> /etc/profile'
       srv.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+      ## Copy ovs patch
+      srv.vm.provision :file do |file|
+        file.source = "mn-options.patch"
+        file.destination = "/tmp/mn-options.patch"
+      end
 
       ## Install prereq
       srv.vm.provision :shell, :inline => $init
