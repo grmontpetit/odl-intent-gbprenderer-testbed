@@ -94,25 +94,25 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       ## Install mininet
       #srv.vm.provision :shell, privileged: false, :inline => $mininet
       ## SSH config
-      config.ssh.forward_x11 = false
+      srv.ssh.forward_x11 = false
 
       ## Required for the python scripts (ipaddr usage)
       srv.vm.provision :shell, privileged: true, inline: 'apt-get install -y python-ipaddr'
 
       ## Copy the python scripts to the /tmp/testOfOverlay directory
-      config.vm.provision :file do |file|
+      srv.vm.provision :file do |file|
         file.source = "testOfOverlay/config.py"
         file.destination = "/tmp/testOfOverlay/config.py"
       end
-      config.vm.provision :file do |file|
+      srv.vm.provision :file do |file|
         file.source = "testOfOverlay/mininet_gbp.py"
         file.destination = "/tmp/testOfOverlay/mininet_gbp.py"
       end
-      config.vm.provision :file do |file|
+      srv.vm.provision :file do |file|
         file.source = "testOfOverlay/odl_gbp.py"
         file.destination = "/tmp/testOfOverlay/odl_gbp.py"
       end
-      config.vm.provision :file do |file|
+      srv.vm.provision :file do |file|
         file.source = "testOfOverlay/testOfOverlay.py"
         file.destination = "/tmp/testOfOverlay/testOfOverlay.py"
       end
