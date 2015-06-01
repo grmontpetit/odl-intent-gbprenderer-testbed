@@ -59,13 +59,6 @@ $cleanup = <<SCRIPT
   rm -rf /tmp/*
 SCRIPT
 
-$gbp = <<SCRIPT
-  export GBPHOST1="config.vm.box = envconfig[‘gbphost1’]"
-  export GBPHOST2="config.vm.box = envconfig[‘gbphost2’]"
-  export CONTROLLER="config.vm.box = envconfig[‘controller’]"
-  sudo apt-get install -y python-ipaddr
-SCRIPT
-
 # Create boxes
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
  
@@ -78,21 +71,56 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         vb.name = servers["name"]
         vb.memory = servers["ram"]
       end
-      # Make ovs image here
-      # set image env vars here
+      # Set guest environment variables
       controller = servers["controller"]
       remote_ip = servers["remote_ip"]
       remote_alias = servers["remote_alias"]
       local_ip = servers["local_ip"]
+      local_alias = servers["name"]
       command1 = 'export REMOTE_IP=\"' + remote_ip + '\"'
       command2 = 'export CONTROLLER=\"' + controller + '\"'
       command3 = 'export REMOTE_ALIAS=\"' + remote_alias + '\"'
       command4 = 'export LOCAL_IP=\"' + local_ip + '\"'
-      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command1 + ' >> /etc/profile'
-      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command2 + ' >> /etc/profile'
-      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command3 + ' >> /etc/profile'
-      srv.vm.provision "shell", privileged: true, inline: 'echo ' + command4 + ' >> /etc/profile'
+      srv.vm.provision :shell, privileged: true, inline: 'echo ' + command1 + ' >> /etc/profile'
+      srv.vm.provision :shell, privileged: true, inline: 'echo ' + command2 + ' >> /etc/profile'
+      srv.vm.provision :shell, privileged: true, inline: 'echo ' + command3 + ' >> /etc/profile'
+      srv.vm.provision :shell, privileged: true, inline: 'echo ' + command4 + ' >> /etc/profile'
       srv.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
+
+      ## Install prereq
+      #srv.vm.provision :shell, :inline => $init
+      ## Install OVS
+      #srv.vm.provision :shell, privileged: false, :inline => $ovs
+      ## Install mininet
+      #srv.vm.provision :shell, privileged: false, :inline => $mininet
+      ## SSH config
+      config.ssh.forward_x11 = false
+
+      ## Required for the python scripts (ipaddr usage)
+      srv.vm.provision :shell, privileged: true, inline: 'apt-get install -y python-ipaddr'
+
+      ## Copy the python scripts to the /tmp/testOfOverlay directory
+      config.vm.provision :file do |file|
+        file.source = "scripts/testOfOverlay/config.py"
+        file.destination = "/tmp/testOfOverlay/config.py"
+      end
+      config.vm.provision :file do |file|
+        file.source = "scripts/testOfOverlay/mininet_gbp.py"
+        file.destination = "/tmp/testOfOverlay/mininet_gbp.py"
+      end
+      config.vm.provision :file do |file|
+        file.source = "scripts/testOfOverlay/odl_gbp.py"
+        file.destination = "/tmp/testOfOverlay/odl_gbp.py"
+      end
+      config.vm.provision :file do |file|
+        file.source = "scripts/testOfOverlay/testOfOverlay.py"
+        file.destination = "/tmp/testOfOverlay/testOfOverlay.py"
+      end
+      ## Run python script
+      srv.vm.provision :shell, privileged: true, inline: 'tmp/testOfOverlay/testOfOverlay.py --local ' + local_alias +' --controller' + controller
+
+      ## Clean the install
+      srv.vm.provision :shell, :inline => $cleanup
     end
   end
 end
